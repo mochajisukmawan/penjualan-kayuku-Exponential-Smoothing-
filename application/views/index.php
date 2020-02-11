@@ -124,8 +124,8 @@ $data_bulan = array('januari',
                 <td><?=$v_da->aktual?></td>
                 <td><?=$data_prakiraan_awal->prakiraanawal?></td>
                 <td>
-                  <button class="btn btn-info" data-toggle="modal" data-target="#prakiraanawal">Lihat</button>
-                  <div class="portfolio-modal modal fade" id="prakiraanawal" tabindex="-1" role="dialog" aria-labelledby="portfolioModal1Label" aria-hidden="true">
+                  <button class="btn btn-info" data-toggle="modal" data-target="#prakiraanawal<?=$no?>">Lihat</button>
+                  <div class="portfolio-modal modal fade" id="prakiraanawal<?=$no?>" tabindex="-1" role="dialog" aria-labelledby="portfolioModal1Label" aria-hidden="true">
                     <div class="modal-dialog modal-xl" role="document">
                       <div class="modal-content">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -183,8 +183,8 @@ $data_bulan = array('januari',
                 <td><?=$v_da->aktual?></td>
                 <td><?=$prediksi?></td>
                 <td>
-                  <button class="btn btn-info" data-toggle="modal" data-target="#prakiraan">Lihat</button>
-                  <div class="portfolio-modal modal fade" id="prakiraan" tabindex="-1" role="dialog" aria-labelledby="portfolioModal1Label" aria-hidden="true">
+                  <button class="btn btn-info" data-toggle="modal" data-target="#prakiraan<?=$no?>">Lihat</button>
+                  <div class="portfolio-modal modal fade" id="prakiraan<?=$no?>" tabindex="-1" role="dialog" aria-labelledby="portfolioModal1Label" aria-hidden="true">
                     <div class="modal-dialog modal-xl" role="document">
                       <div class="modal-content">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
