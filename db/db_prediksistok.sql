@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 03 Des 2019 pada 11.29
+-- Waktu pembuatan: 12 Feb 2020 pada 14.03
 -- Versi server: 10.1.38-MariaDB
 -- Versi PHP: 7.3.3
 
@@ -30,7 +30,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `t_prakiraan` (
   `id_prakiraan` int(1) NOT NULL,
-  `prakiraanawal` bigint(20) NOT NULL
+  `prakiraanawal` float(20,3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -38,7 +38,7 @@ CREATE TABLE `t_prakiraan` (
 --
 
 INSERT INTO `t_prakiraan` (`id_prakiraan`, `prakiraanawal`) VALUES
-(1, 30000);
+(1, 26000.230);
 
 -- --------------------------------------------------------
 
@@ -50,7 +50,7 @@ CREATE TABLE `t_stok` (
   `id` bigint(20) NOT NULL,
   `bulan` int(2) NOT NULL,
   `tahun` int(4) NOT NULL,
-  `aktual` bigint(20) NOT NULL
+  `aktual` float(20,3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -58,8 +58,9 @@ CREATE TABLE `t_stok` (
 --
 
 INSERT INTO `t_stok` (`id`, `bulan`, `tahun`, `aktual`) VALUES
-(4, 1, 2020, 25000),
-(10, 2, 2020, 27000);
+(4, 1, 2020, 25000.000),
+(10, 2, 2020, 27000.000),
+(11, 3, 2020, 26500.439);
 
 --
 -- Indexes for dumped tables
@@ -85,7 +86,7 @@ ALTER TABLE `t_stok`
 -- AUTO_INCREMENT untuk tabel `t_stok`
 --
 ALTER TABLE `t_stok`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
