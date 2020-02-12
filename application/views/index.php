@@ -120,19 +120,23 @@ $data_bulan = array('januari',
           $prediksi1 = 0;
           $prediksi2 = 0;
           $prediksi3 = 0;
+          $prediksi_data1 = array();
+          $prediksi_data2 = array();
+          $prediksi_data3 = array();
           $mape1=array();
           $mape2=array();
           $mape3=array();
           $label=array();
+          $total=array();
           foreach ($data_aktual->result() as $v_da) {
             if($no == 0){?>
               <tr>
                 <td><?=$data_bulan[$v_da->bulan-1]?></td>
                 <td><?=$v_da->tahun?></td>
-                <td><?=$v_da->aktual?></td>
-                <td><?=$data_prakiraan_awal->prakiraanawal?></td>
-                <td><?=$data_prakiraan_awal->prakiraanawal?></td>
-                <td><?=$data_prakiraan_awal->prakiraanawal?></td>
+                <td><?=round($v_da->aktual,3)?></td>
+                <td><?=round($data_prakiraan_awal->prakiraanawal,3)?></td>
+                <td><?=round($data_prakiraan_awal->prakiraanawal,3)?></td>
+                <td><?=round($data_prakiraan_awal->prakiraanawal,3)?></td>
                 <td>
                   <button class="btn btn-info" data-toggle="modal" data-target="#prakiraanawal<?=$no?>">Lihat</button>
                   <div class="portfolio-modal modal fade" id="prakiraanawal<?=$no?>" tabindex="-1" role="dialog" aria-labelledby="portfolioModal1Label" aria-hidden="true">
@@ -155,26 +159,29 @@ $data_bulan = array('januari',
                                 </div>
                                 <?php
                                 $nilaiaktual = $v_da->aktual;
-
+                                array_push($total,$v_da->aktual);
                                 $nilaiperkiraan1 = $data_prakiraan_awal->prakiraanawal;
                                 $prediksi1 =  $nilaiperkiraan1 - 1 + (0.5*($nilaiaktual - $nilaiperkiraan1));
                                 $pengurangan1 = $nilaiaktual - $nilaiperkiraan1;
                                 $kalialfa1 = 0.5*($nilaiaktual - $nilaiperkiraan1);
-                                array_push($mape1,abs((($nilaiaktual - $nilaiperkiraan1)/$nilaiaktual) * 100));
+                                array_push($mape1,round(abs((($nilaiaktual - $nilaiperkiraan1)/$nilaiaktual) * 100),3));
                                 array_push($label,''.$data_bulan[$v_da->bulan-1].' '.$v_da->tahun.'');
+                                array_push($prediksi_data1,round($prediksi1,3));
 
                                 $nilaiperkiraan2 = $data_prakiraan_awal->prakiraanawal;
                                 $prediksi2 =  $nilaiperkiraan2 - 1 + (0.7*($nilaiaktual - $nilaiperkiraan2));
                                 $pengurangan2 = $nilaiaktual - $nilaiperkiraan2;
                                 $kalialfa2 = 0.7*($nilaiaktual - $nilaiperkiraan2);
-                                array_push($mape2,abs((($nilaiaktual - $nilaiperkiraan2)/$nilaiaktual)* 100));
+                                array_push($mape2,round(abs((($nilaiaktual - $nilaiperkiraan2)/$nilaiaktual)* 100),3));
+                                array_push($prediksi_data2,round($prediksi2,3));
 
 
                                 $nilaiperkiraan3 = $data_prakiraan_awal->prakiraanawal;
                                 $prediksi3 =  $nilaiperkiraan3 - 1 + (0.9*($nilaiaktual - $nilaiperkiraan3));
                                 $pengurangan3 = $nilaiaktual - $nilaiperkiraan3;
                                 $kalialfa3 = 0.9*($nilaiaktual - $nilaiperkiraan3);
-                                array_push($mape3,abs((($nilaiaktual - $nilaiperkiraan3)/$nilaiaktual) * 100));
+                                array_push($mape3,round(abs((($nilaiaktual - $nilaiperkiraan3)/$nilaiaktual) * 100),3));
+                                array_push($prediksi_data3,round($prediksi3,3));
 
                                 ?>
                                 <pre class="text-left">
@@ -227,10 +234,10 @@ $data_bulan = array('januari',
               <tr>
                 <td><?=$data_bulan[$v_da->bulan-1]?></td>
                 <td><?=$v_da->tahun?></td>
-                <td><?=$v_da->aktual?></td>
-                <td><?=$prediksi1?></td>
-                <td><?=$prediksi2?></td>
-                <td><?=$prediksi3?></td>
+                <td><?=round($v_da->aktual,3)?></td>
+                <td><?=round($prediksi1,3)?></td>
+                <td><?=round($prediksi2,3)?></td>
+                <td><?=round($prediksi3,3)?></td>
                 <td>
                   <button class="btn btn-info" data-toggle="modal" data-target="#prakiraan<?=$no?>">Lihat</button>
                   <div class="portfolio-modal modal fade" id="prakiraan<?=$no?>" tabindex="-1" role="dialog" aria-labelledby="portfolioModal1Label" aria-hidden="true">
@@ -255,26 +262,29 @@ $data_bulan = array('januari',
 
 
                                 $nilaiaktual = $v_da->aktual;
-
+                                array_push($total,$v_da->aktual);
                                 $nilaiperkiraan1 = $prediksi1;
                                 $prediksi1 =  $nilaiperkiraan1 - 1 + (0.5*($nilaiaktual - $nilaiperkiraan1));
                                 $pengurangan1 = $nilaiaktual - $nilaiperkiraan1;
                                 $kalialfa1 = 0.5*($nilaiaktual - $nilaiperkiraan1);
-                                array_push($mape1,abs((($nilaiaktual - $nilaiperkiraan1)/$nilaiaktual) * 100));
+                                array_push($mape1,round(abs((($nilaiaktual - $nilaiperkiraan1)/$nilaiaktual) * 100),3));
                                 array_push($label,''.$data_bulan[$v_da->bulan-1].' '.$v_da->tahun.'');
+                                array_push($prediksi_data1,round($prediksi1,3));
 
                                 $nilaiperkiraan2 = $prediksi2;
                                 $prediksi2 =  $nilaiperkiraan2 - 1 + (0.7*($nilaiaktual - $nilaiperkiraan2));
                                 $pengurangan2 = $nilaiaktual - $nilaiperkiraan2;
                                 $kalialfa2 = 0.7*($nilaiaktual - $nilaiperkiraan2);
-                                array_push($mape2,abs((($nilaiaktual - $nilaiperkiraan2)/$nilaiaktual)* 100));
+                                array_push($mape2,round(abs((($nilaiaktual - $nilaiperkiraan2)/$nilaiaktual)* 100),3));
+                                array_push($prediksi_data2,round($prediksi2,3));
 
 
                                 $nilaiperkiraan3 = $prediksi3;
                                 $prediksi3 =  $nilaiperkiraan3 - 1 + (0.9*($nilaiaktual - $nilaiperkiraan3));
                                 $pengurangan3 = $nilaiaktual - $nilaiperkiraan3;
                                 $kalialfa3 = 0.9*($nilaiaktual - $nilaiperkiraan3);
-                                array_push($mape3,abs( (($nilaiaktual - $nilaiperkiraan3)/$nilaiaktual) * 100));
+                                array_push($mape3,round(abs( (($nilaiaktual - $nilaiperkiraan3)/$nilaiaktual) * 100),3));
+                                array_push($prediksi_data3,round($prediksi3,3));
 
 
                                 ?>
@@ -329,7 +339,7 @@ $data_bulan = array('januari',
           }
           ?>
           <tr>
-            <td colspan="3">prediksi</td><td><?=$prediksi1?></td><td><?=$prediksi2?></td><td><?=$prediksi3?></td><td></td>
+            <td colspan="3">prediksi</td><td><?=round($prediksi1,3)?></td><td><?=round($prediksi2,3)?></td><td><?=round($prediksi3,3)?></td><td></td>
           </tr>
         </tbody>
       </table>
@@ -365,17 +375,17 @@ $data_bulan = array('januari',
             $j = $i+1;
             echo '<tr>';
             echo '<td>'.$j.'</td>';
-            echo '<td>'.$mape1[$i].'</td>';
-            echo '<td>'.$mape2[$i].'</td>';
-            echo '<td>'.$mape3[$i].'</td>';
+            echo '<td>'.round($mape1[$i],3).'</td>';
+            echo '<td>'.round($mape2[$i],3).'</td>';
+            echo '<td>'.round($mape3[$i],3).'</td>';
             echo '</tr>';
 
           };
           echo '<tr>';
           echo '<td>Total</td>';
-          echo '<td>'.$jum1/$no.'</td>';
-          echo '<td>'.$jum2/$no.'</td>';
-          echo '<td>'.$jum3/$no.'</td>';
+          echo '<td>'.round($jum1/$no,3).'</td>';
+          echo '<td>'.round($jum2/$no,3).'</td>';
+          echo '<td>'.round($jum3/$no,3).'</td>';
           echo '</tr>';
 
           ?>
@@ -438,7 +448,7 @@ $data_bulan = array('januari',
               <tr>
                 <td><?=$data_bulan[$v_da->bulan-1]?></td>
                 <td><?=$v_da->tahun?></td>
-                <td><?=$v_da->aktual?></td>
+                <td><?=round($v_da->aktual,3)?></td>
                 <td><a href="<?=base_url()?>utama/delete_aktual/<?=$v_da->id?>"><button class="btn btn-danger">delete</button></a></td>
               </tr>
             <?php
@@ -465,7 +475,7 @@ $data_bulan = array('januari',
       <div class="divider-custom">
 
 
-        <input class="form-control" name="prakiraanawal" type="number" value="<?=$data_prakiraan_awal->prakiraanawal?>" placeholder="Masukan Nilai Prakiraan Awal" required="required">
+        <input class="form-control" name="prakiraanawal" type="text" value="<?=$data_prakiraan_awal->prakiraanawal?>" placeholder="Masukan Nilai Prakiraan Awal" >
       </div>
       <div class="divider-custom">
         <button type="submit" class="btn btn-success">Simpan</button>
@@ -476,45 +486,7 @@ $data_bulan = array('januari',
     </div>
   </section>
 
-  <!-- Footer -->
-  <footer class="footer text-center">
-    <div class="container">
-      <div class="row">
 
-        <!-- Footer Location -->
-        <div class="col-lg-4 mb-5 mb-lg-0">
-          <h4 class="text-uppercase mb-4">Location</h4>
-          <p class="lead mb-0">2215 John Daniel Drive
-            <br>Clark, MO 65243</p>
-        </div>
-
-        <!-- Footer Social Icons -->
-        <div class="col-lg-4 mb-5 mb-lg-0">
-          <h4 class="text-uppercase mb-4">Around the Web</h4>
-          <a class="btn btn-outline-light btn-social mx-1" href="#">
-            <i class="fab fa-fw fa-facebook-f"></i>
-          </a>
-          <a class="btn btn-outline-light btn-social mx-1" href="#">
-            <i class="fab fa-fw fa-twitter"></i>
-          </a>
-          <a class="btn btn-outline-light btn-social mx-1" href="#">
-            <i class="fab fa-fw fa-linkedin-in"></i>
-          </a>
-          <a class="btn btn-outline-light btn-social mx-1" href="#">
-            <i class="fab fa-fw fa-dribbble"></i>
-          </a>
-        </div>
-
-        <!-- Footer About Text -->
-        <div class="col-lg-4">
-          <h4 class="text-uppercase mb-4">About Freelancer</h4>
-          <p class="lead mb-0">Freelance is a free to use, MIT licensed Bootstrap theme created by
-            <a href="http://startbootstrap.com">Start Bootstrap</a>.</p>
-        </div>
-
-      </div>
-    </div>
-  </footer>
 
   <!-- Copyright Section -->
   <section class="copyright py-4 text-center text-white">
@@ -571,7 +543,7 @@ $data_bulan = array('januari',
                   </div>
                   <div class="control-group">
                       <label>Nilai Aktual</label>
-                      <input class="form-control" name="aktual" type="number" placeholder="Masukan Nilai Aktual" required="required">
+                      <input class="form-control" name="aktual" placeholder="Masukan Nilai Aktual" required="required">
                   </div>
 
                   <button type="submit" class="btn btn-primary">Simpan</button>
@@ -606,9 +578,14 @@ $data_bulan = array('januari',
   $jum2_json = json_encode($jum2);
   $jum3_json = json_encode($jum3);
 
-  $prediksi1_json = json_encode($prediksi1);
-  $prediksi2_json = json_encode($prediksi2);
-  $prediksi3_json = json_encode($prediksi3);
+  $prediksi1_json = json_encode(round($prediksi1,3));
+  $prediksi2_json = json_encode(round($prediksi2,3));
+  $prediksi3_json = json_encode(round($prediksi3,3));
+
+  $prediksi_data1_json = json_encode($prediksi_data1);
+  $prediksi_data2_json = json_encode($prediksi_data2);
+  $prediksi_data3_json = json_encode($prediksi_data3);
+  $total_json = json_encode($total);
    ?>
   <script src="<?=base_url()?>assets/vendor/jquery/jquery.min.js"></script>
   <script src="<?=base_url()?>assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -646,16 +623,24 @@ $data_bulan = array('januari',
     var prediksi2 = JSON.parse('<?=$prediksi2_json?>');
     var prediksi3 = JSON.parse('<?=$prediksi3_json?>');
 
+    var prediksi_data1 = JSON.parse('<?=$prediksi_data1_json?>');
+    var prediksi_data2 = JSON.parse('<?=$prediksi_data2_json?>');
+    var prediksi_data3 = JSON.parse('<?=$prediksi_data3_json?>');
+    var total = JSON.parse('<?=$total_json?>');
+
+    console.log(prediksi_data1);
+    console.log(prediksi_data2);
+    console.log(prediksi_data3);
     if(jum1<jum2){
       if(jum1<jum3){
           terbesar=jum1;
-          nilai = mape1;
+          nilai = prediksi_data1;
           warna = window.chartColors.red;
           nama = 'α = 0.5';
           prediksi = prediksi1;
       }else{
           terbesar=jum3;
-          nilai = mape3;
+          nilai = prediksi_data3;
           warna = window.chartColors.yellow;
           nama = 'α = 0.9';
           prediksi = prediksi3;
@@ -665,7 +650,7 @@ $data_bulan = array('januari',
     }else{
       if(jum2<jum3){
           terbesar=jum2;
-          nilai = mape2;
+          nilai = prediksi_data2;
           warna = window.chartColors.blue;
           nama = 'α = 0.7';
           prediksi = prediksi2;
@@ -673,7 +658,7 @@ $data_bulan = array('januari',
 
       }else{
           terbesar=jum3;
-          nilai = mape3;
+          nilai = prediksi_data3;
           warna = window.chartColors.yellow;
           nama = 'α = 0.9';
           prediksi = prediksi3;
@@ -689,23 +674,29 @@ $data_bulan = array('januari',
       data: {
         labels: label,
         datasets: [{
+          label: 'aktual',
+          backgroundColor: window.chartColors.black,
+          borderColor: window.chartColors.black,
+          data: total,
+          fill: false,
+        },{
           label: 'α = 0.5',
           backgroundColor: window.chartColors.red,
           borderColor: window.chartColors.red,
-          data: mape1,
+          data: prediksi_data1,
           fill: false,
         }, {
           label: 'α = 0.7',
           fill: false,
           backgroundColor: window.chartColors.blue,
           borderColor: window.chartColors.blue,
-          data: mape2,
+          data: prediksi_data2,
         }, {
           label: 'α = 0.9',
           fill: false,
           backgroundColor: window.chartColors.yellow,
           borderColor: window.chartColors.yellow,
-          data: mape3,
+          data: prediksi_data3,
         }]
       },
       options: {
@@ -727,22 +718,16 @@ $data_bulan = array('januari',
             display: true,
             scaleLabel: {
               display: true,
-              labelString: 'bulan'
+              labelString: 'Bulan'
             }
           }],
           yAxes: [{
             display: true,
             scaleLabel: {
               display: true,
-              labelString: 'Total Benar'
-            },
-            ticks: {
-              min: 0,
-
-
-              // forces step size to be 5 units
-              stepSize: 5
+              labelString: 'Nilai Aktual'
             }
+
           }]
         }
       }
@@ -753,6 +738,12 @@ $data_bulan = array('januari',
       data: {
         labels: label,
         datasets: [{
+          label: 'aktual',
+          backgroundColor: window.chartColors.black,
+          borderColor: window.chartColors.black,
+          data: total,
+          fill: false,
+        },{
           label: nama,
           backgroundColor: warna,
           borderColor: warna,
@@ -779,21 +770,14 @@ $data_bulan = array('januari',
             display: true,
             scaleLabel: {
               display: true,
-              labelString: 'bulan'
+              labelString: 'Bulan'
             }
           }],
           yAxes: [{
             display: true,
             scaleLabel: {
               display: true,
-              labelString: 'Total Benar'
-            },
-            ticks: {
-              min: 0,
-
-
-              // forces step size to be 5 units
-              stepSize: 5
+              labelString: 'Nilai Aktual'
             }
           }]
         }
