@@ -102,7 +102,9 @@ $data_bulan = array('januari',
             <th>Bulan</th>
             <th>Tahun</th>
             <th>aktual</th>
-            <th>prakiraan</th>
+            <th>prakiraan α = 0.5</th>
+            <th>prakiraan α = 0.7</th>
+            <th>prakiraan α = 0.9</th>
             <th width="145">rumus prakiraan
               <!-- Portfolio Item 1 -->
             </th>
@@ -112,16 +114,24 @@ $data_bulan = array('januari',
           <?php
           $this->db->order_by('tahun');
           $this->db->order_by('bulan');
-          $data_aktual = $this->db->get('t_stok')->result();
+          $data_aktual = $this->db->get('t_stok');
           $data_prakiraan_awal = $this->db->get_where('t_prakiraan',array('id_prakiraan'=>1))->row();
           $no = 0;
-          $prediksi = 0;
-          foreach ($data_aktual as $v_da) {
+          $prediksi1 = 0;
+          $prediksi2 = 0;
+          $prediksi3 = 0;
+          $mape1=array();
+          $mape2=array();
+          $mape3=array();
+          $label=array();
+          foreach ($data_aktual->result() as $v_da) {
             if($no == 0){?>
               <tr>
                 <td><?=$data_bulan[$v_da->bulan-1]?></td>
                 <td><?=$v_da->tahun?></td>
                 <td><?=$v_da->aktual?></td>
+                <td><?=$data_prakiraan_awal->prakiraanawal?></td>
+                <td><?=$data_prakiraan_awal->prakiraanawal?></td>
                 <td><?=$data_prakiraan_awal->prakiraanawal?></td>
                 <td>
                   <button class="btn btn-info" data-toggle="modal" data-target="#prakiraanawal<?=$no?>">Lihat</button>
@@ -144,27 +154,64 @@ $data_bulan = array('januari',
                                   <div class="divider-custom-line"></div>
                                 </div>
                                 <?php
-                                $nilaiperkiraan = $data_prakiraan_awal->prakiraanawal;
                                 $nilaiaktual = $v_da->aktual;
 
-                                $prediksi =  $nilaiperkiraan - 1 + (0.2*($nilaiaktual - $nilaiperkiraan));
-                                $pengurangan = $nilaiaktual - $nilaiperkiraan;
-                                $kalialfa = 0.2*($nilaiaktual - $nilaiperkiraan)
+                                $nilaiperkiraan1 = $data_prakiraan_awal->prakiraanawal;
+                                $prediksi1 =  $nilaiperkiraan1 - 1 + (0.5*($nilaiaktual - $nilaiperkiraan1));
+                                $pengurangan1 = $nilaiaktual - $nilaiperkiraan1;
+                                $kalialfa1 = 0.5*($nilaiaktual - $nilaiperkiraan1);
+                                array_push($mape1,abs((($nilaiaktual - $nilaiperkiraan1)/$nilaiaktual) * 100));
+                                array_push($label,''.$data_bulan[$v_da->bulan-1].' '.$v_da->tahun.'');
+
+                                $nilaiperkiraan2 = $data_prakiraan_awal->prakiraanawal;
+                                $prediksi2 =  $nilaiperkiraan2 - 1 + (0.7*($nilaiaktual - $nilaiperkiraan2));
+                                $pengurangan2 = $nilaiaktual - $nilaiperkiraan2;
+                                $kalialfa2 = 0.7*($nilaiaktual - $nilaiperkiraan2);
+                                array_push($mape2,abs((($nilaiaktual - $nilaiperkiraan2)/$nilaiaktual)* 100));
+
+
+                                $nilaiperkiraan3 = $data_prakiraan_awal->prakiraanawal;
+                                $prediksi3 =  $nilaiperkiraan3 - 1 + (0.9*($nilaiaktual - $nilaiperkiraan3));
+                                $pengurangan3 = $nilaiaktual - $nilaiperkiraan3;
+                                $kalialfa3 = 0.9*($nilaiaktual - $nilaiperkiraan3);
+                                array_push($mape3,abs((($nilaiaktual - $nilaiperkiraan3)/$nilaiaktual) * 100));
+
                                 ?>
                                 <pre class="text-left">
                             Ft = Prakiraan Permintaan sekarang
                             Ft-1 = Prakiraan Permintaan yang lalu
-                            α = Konstanta Eksponensial(0.2)
+                            α = Konstanta Eksponensial (0.5 , 0.7, 0.9)
                             Dt-1 = Permintaan Nyata
                                 </pre>
                                 <pre class="text-left">
                             Ft = Ft – 1 + α (Dt-1 – Ft-1)
-                            Ft = <?=$nilaiperkiraan?> + 0.2 (<?=$nilaiaktual?> – <?=$nilaiperkiraan?>)
-                            Ft = <?=$nilaiperkiraan?> + 0.2 (<?=$pengurangan?>)
-                            Ft = <?=$nilaiperkiraan?> + (<?=$kalialfa?>)
-                            Ft = <?=$prediksi?>
+                            Ft = <?=$nilaiperkiraan1?> + 0.5 (<?=$nilaiaktual?> – <?=$nilaiperkiraan1?>)
+                            Ft = <?=$nilaiperkiraan1?> + 0.5 (<?=$pengurangan1?>)
+                            Ft = <?=$nilaiperkiraan1?> + (<?=$kalialfa1?>)
+                            Ft = <?=$prediksi1?>
+
 
                                   </pre>
+                                  <pre class="text-left">
+                            Ft = Ft – 1 + α (Dt-1 – Ft-1)
+                            Ft = <?=$nilaiperkiraan2?> + 0.7 (<?=$nilaiaktual?> – <?=$nilaiperkiraan1?>)
+                            Ft = <?=$nilaiperkiraan2?> + 0.7 (<?=$pengurangan2?>)
+                            Ft = <?=$nilaiperkiraan2?> + (<?=$kalialfa2?>)
+                            Ft = <?=$prediksi2?>
+
+
+                                    </pre>
+                                    <pre class="text-left">
+                            Ft = Ft – 1 + α (Dt-1 – Ft-1)
+                            Ft = <?=$nilaiperkiraan3?> + 0.9 (<?=$nilaiaktual?> – <?=$nilaiperkiraan3?>)
+                            Ft = <?=$nilaiperkiraan3?> + 0.9 (<?=$pengurangan3?>)
+                            Ft = <?=$nilaiperkiraan3?> + (<?=$kalialfa3?>)
+                            Ft = <?=$prediksi3?>
+
+
+                                      </pre>
+
+
 
                               </div>
                             </div>
@@ -181,7 +228,9 @@ $data_bulan = array('januari',
                 <td><?=$data_bulan[$v_da->bulan-1]?></td>
                 <td><?=$v_da->tahun?></td>
                 <td><?=$v_da->aktual?></td>
-                <td><?=$prediksi?></td>
+                <td><?=$prediksi1?></td>
+                <td><?=$prediksi2?></td>
+                <td><?=$prediksi3?></td>
                 <td>
                   <button class="btn btn-info" data-toggle="modal" data-target="#prakiraan<?=$no?>">Lihat</button>
                   <div class="portfolio-modal modal fade" id="prakiraan<?=$no?>" tabindex="-1" role="dialog" aria-labelledby="portfolioModal1Label" aria-hidden="true">
@@ -203,27 +252,65 @@ $data_bulan = array('januari',
                                   <div class="divider-custom-line"></div>
                                 </div>
                                 <?php
-                                $nilaiperkiraan = $prediksi;
+
+
                                 $nilaiaktual = $v_da->aktual;
 
-                                $prediksi =  $nilaiperkiraan - 1 + (0.2*($nilaiaktual - $nilaiperkiraan));
-                                $pengurangan = $nilaiaktual - $nilaiperkiraan;
-                                $kalialfa = 0.2*($nilaiaktual - $nilaiperkiraan)
+                                $nilaiperkiraan1 = $prediksi1;
+                                $prediksi1 =  $nilaiperkiraan1 - 1 + (0.5*($nilaiaktual - $nilaiperkiraan1));
+                                $pengurangan1 = $nilaiaktual - $nilaiperkiraan1;
+                                $kalialfa1 = 0.5*($nilaiaktual - $nilaiperkiraan1);
+                                array_push($mape1,abs((($nilaiaktual - $nilaiperkiraan1)/$nilaiaktual) * 100));
+                                array_push($label,''.$data_bulan[$v_da->bulan-1].' '.$v_da->tahun.'');
+
+                                $nilaiperkiraan2 = $prediksi2;
+                                $prediksi2 =  $nilaiperkiraan2 - 1 + (0.7*($nilaiaktual - $nilaiperkiraan2));
+                                $pengurangan2 = $nilaiaktual - $nilaiperkiraan2;
+                                $kalialfa2 = 0.7*($nilaiaktual - $nilaiperkiraan2);
+                                array_push($mape2,abs((($nilaiaktual - $nilaiperkiraan2)/$nilaiaktual)* 100));
+
+
+                                $nilaiperkiraan3 = $prediksi3;
+                                $prediksi3 =  $nilaiperkiraan3 - 1 + (0.9*($nilaiaktual - $nilaiperkiraan3));
+                                $pengurangan3 = $nilaiaktual - $nilaiperkiraan3;
+                                $kalialfa3 = 0.9*($nilaiaktual - $nilaiperkiraan3);
+                                array_push($mape3,abs( (($nilaiaktual - $nilaiperkiraan3)/$nilaiaktual) * 100));
+
 
                                 ?>
                                 <pre class="text-left">
                             Ft = Prakiraan Permintaan sekarang
                             Ft-1 = Prakiraan Permintaan yang lalu
-                            α = Konstanta Eksponensial(0.2)
+                            α = Konstanta Eksponensial (0.5 , 0.7, 0.9)
                             Dt-1 = Permintaan Nyata
                                 </pre>
                                 <pre class="text-left">
                             Ft = Ft – 1 + α (Dt-1 – Ft-1)
-                            Ft = <?=$nilaiperkiraan?> + 0.2 (<?=$nilaiaktual?> – <?=$nilaiperkiraan?>)
-                            Ft = <?=$nilaiperkiraan?> + 0.2 (<?=$pengurangan?>)
-                            Ft = <?=$nilaiperkiraan?> + (<?=$kalialfa?>)
-                            Ft = <?=$prediksi?>
+                            Ft = <?=$nilaiperkiraan1?> + 0.5 (<?=$nilaiaktual?> – <?=$nilaiperkiraan1?>)
+                            Ft = <?=$nilaiperkiraan1?> + 0.5 (<?=$pengurangan1?>)
+                            Ft = <?=$nilaiperkiraan1?> + (<?=$kalialfa1?>)
+                            Ft = <?=$prediksi1?>
+
+
                                   </pre>
+                                  <pre class="text-left">
+                            Ft = Ft – 1 + α (Dt-1 – Ft-1)
+                            Ft = <?=$nilaiperkiraan2?> + 0.7 (<?=$nilaiaktual?> – <?=$nilaiperkiraan1?>)
+                            Ft = <?=$nilaiperkiraan2?> + 0.7 (<?=$pengurangan2?>)
+                            Ft = <?=$nilaiperkiraan2?> + (<?=$kalialfa2?>)
+                            Ft = <?=$prediksi2?>
+
+
+                                    </pre>
+                                    <pre class="text-left">
+                            Ft = Ft – 1 + α (Dt-1 – Ft-1)
+                            Ft = <?=$nilaiperkiraan3?> + 0.9 (<?=$nilaiaktual?> – <?=$nilaiperkiraan3?>)
+                            Ft = <?=$nilaiperkiraan3?> + 0.9 (<?=$pengurangan3?>)
+                            Ft = <?=$nilaiperkiraan3?> + (<?=$kalialfa3?>)
+                            Ft = <?=$prediksi3?>
+
+
+                                      </pre>
 
                               </div>
                             </div>
@@ -241,13 +328,81 @@ $data_bulan = array('januari',
           $no++;
           }
           ?>
-
+          <tr>
+            <td colspan="3">prediksi</td><td><?=$prediksi1?></td><td><?=$prediksi2?></td><td><?=$prediksi3?></td><td></td>
+          </tr>
         </tbody>
       </table>
     </div>
+    <div class="container">
+
+      <!-- About Section Heading -->
+      <h2 class="page-section-heading text-center text-uppercase text-secondary">MAPE</h2>
+
+      <!-- Icon Divider -->
+      <div class="divider-custom">
+        <div class="divider-custom-line"></div>
+      </div>
+      <table class="table table-bordered text-center">
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>mape = 0.5</th>
+            <th>mape = 0.7</th>
+            <th>mape = 0.9</th>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php
+          $jum1=0;
+          $jum2=0;
+          $jum3=0;
+          for($i = 0;$i < $no ; $i++){
+            $jum1 = $jum1+$mape1[$i];
+            $jum2 = $jum2+$mape2[$i];
+            $jum3 = $jum1+$mape3[$i];
+            $j = $i+1;
+            echo '<tr>';
+            echo '<td>'.$j.'</td>';
+            echo '<td>'.$mape1[$i].'</td>';
+            echo '<td>'.$mape2[$i].'</td>';
+            echo '<td>'.$mape3[$i].'</td>';
+            echo '</tr>';
+
+          };
+          echo '<tr>';
+          echo '<td>Total</td>';
+          echo '<td>'.$jum1/$no.'</td>';
+          echo '<td>'.$jum2/$no.'</td>';
+          echo '<td>'.$jum3/$no.'</td>';
+          echo '</tr>';
+
+          ?>
+        </tbody>
+      </table>
+
+
+    </div>
+    <div class="container">
+      <!-- About Section Heading -->
+      <h2 class="page-section-heading text-center text-uppercase text-secondary">chart mape</h2>
+
+      <!-- Icon Divider -->
+      <div class="divider-custom">
+        <div class="divider-custom-line"></div>
+      </div>
+      <canvas id="canvas"></canvas>
+      <h2 class="page-section-heading text-center text-uppercase text-secondary">chart mape terkecil</h2>
+
+      <!-- Icon Divider -->
+      <div class="divider-custom">
+        <div class="divider-custom-line"></div>
+      </div>
+      <canvas id="canvas2"></canvas>
+    </div>
   </section>
 
-  <!-- About Section -->
   <section class="page-section text-white mb-0" id="about">
     <div class="container">
 
@@ -279,7 +434,7 @@ $data_bulan = array('januari',
             <?php
 
 
-            foreach ($data_aktual as $v_da) {?>
+            foreach ($data_aktual->result() as $v_da) {?>
               <tr>
                 <td><?=$data_bulan[$v_da->bulan-1]?></td>
                 <td><?=$v_da->tahun?></td>
@@ -440,6 +595,21 @@ $data_bulan = array('januari',
   <!-- Portfolio Modal 6 -->
 
   <!-- Bootstrap core JavaScript -->
+
+  <?php
+  $label_json = json_encode($label);
+  $mape1_json = json_encode($mape1);
+  $mape2_json = json_encode($mape2);
+  $mape3_json = json_encode($mape3);
+
+  $jum1_json = json_encode($jum1);
+  $jum2_json = json_encode($jum2);
+  $jum3_json = json_encode($jum3);
+
+  $prediksi1_json = json_encode($prediksi1);
+  $prediksi2_json = json_encode($prediksi2);
+  $prediksi3_json = json_encode($prediksi3);
+   ?>
   <script src="<?=base_url()?>assets/vendor/jquery/jquery.min.js"></script>
   <script src="<?=base_url()?>assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
@@ -453,9 +623,193 @@ $data_bulan = array('januari',
   <!-- Custom scripts for this template -->
   <script src="<?=base_url()?>assets/js/freelancer.min.js"></script>
 
+  <script src="<?=base_url()?>assets/chartjs/Chart.bundle.min.js"></script>
+  <script src="<?=base_url()?>assets/chartjs/Chart.bundle.js"></script>
+  <script src="<?=base_url()?>assets/chartjs/utils.js"></script>
+
+
+
+
+
   <script>
-    var prediksi = '<?=$prediksi?>';
+
+    var terbesar = 0;
+
+    var label = JSON.parse('<?=$label_json?>');
+    var mape1 = JSON.parse('<?=$mape1_json?>');
+    var mape2 = JSON.parse('<?=$mape2_json?>');
+    var mape3 = JSON.parse('<?=$mape3_json?>');
+    var jum1 = JSON.parse('<?=$jum1_json?>');
+    var jum2 = JSON.parse('<?=$jum2_json?>');
+    var jum3 = JSON.parse('<?=$jum3_json?>');
+    var prediksi1 = JSON.parse('<?=$prediksi1_json?>');
+    var prediksi2 = JSON.parse('<?=$prediksi2_json?>');
+    var prediksi3 = JSON.parse('<?=$prediksi3_json?>');
+
+    if(jum1<jum2){
+      if(jum1<jum3){
+          terbesar=jum1;
+          nilai = mape1;
+          warna = window.chartColors.red;
+          nama = 'α = 0.5';
+          prediksi = prediksi1;
+      }else{
+          terbesar=jum3;
+          nilai = mape3;
+          warna = window.chartColors.yellow;
+          nama = 'α = 0.9';
+          prediksi = prediksi3;
+
+
+      }
+    }else{
+      if(jum2<jum3){
+          terbesar=jum2;
+          nilai = mape2;
+          warna = window.chartColors.blue;
+          nama = 'α = 0.7';
+          prediksi = prediksi2;
+
+
+      }else{
+          terbesar=jum3;
+          nilai = mape3;
+          warna = window.chartColors.yellow;
+          nama = 'α = 0.9';
+          prediksi = prediksi3;
+
+
+      }
+    }
+
     $('.add_prediksi_header').html(prediksi);
+
+    var config = {
+      type: 'line',
+      data: {
+        labels: label,
+        datasets: [{
+          label: 'α = 0.5',
+          backgroundColor: window.chartColors.red,
+          borderColor: window.chartColors.red,
+          data: mape1,
+          fill: false,
+        }, {
+          label: 'α = 0.7',
+          fill: false,
+          backgroundColor: window.chartColors.blue,
+          borderColor: window.chartColors.blue,
+          data: mape2,
+        }, {
+          label: 'α = 0.9',
+          fill: false,
+          backgroundColor: window.chartColors.yellow,
+          borderColor: window.chartColors.yellow,
+          data: mape3,
+        }]
+      },
+      options: {
+        responsive: true,
+        title: {
+          display: true,
+          text: ''
+        },
+        tooltips: {
+          mode: 'index',
+          intersect: false,
+        },
+        hover: {
+          mode: 'nearest',
+          intersect: true
+        },
+        scales: {
+          xAxes: [{
+            display: true,
+            scaleLabel: {
+              display: true,
+              labelString: 'bulan'
+            }
+          }],
+          yAxes: [{
+            display: true,
+            scaleLabel: {
+              display: true,
+              labelString: 'Total Benar'
+            },
+            ticks: {
+              min: 0,
+
+
+              // forces step size to be 5 units
+              stepSize: 5
+            }
+          }]
+        }
+      }
+    };
+
+    var config2 = {
+      type: 'line',
+      data: {
+        labels: label,
+        datasets: [{
+          label: nama,
+          backgroundColor: warna,
+          borderColor: warna,
+          data: nilai,
+          fill: false,
+        }]
+      },
+      options: {
+        responsive: true,
+        title: {
+          display: true,
+          text: ''
+        },
+        tooltips: {
+          mode: 'index',
+          intersect: false,
+        },
+        hover: {
+          mode: 'nearest',
+          intersect: true
+        },
+        scales: {
+          xAxes: [{
+            display: true,
+            scaleLabel: {
+              display: true,
+              labelString: 'bulan'
+            }
+          }],
+          yAxes: [{
+            display: true,
+            scaleLabel: {
+              display: true,
+              labelString: 'Total Benar'
+            },
+            ticks: {
+              min: 0,
+
+
+              // forces step size to be 5 units
+              stepSize: 5
+            }
+          }]
+        }
+      }
+    };
+
+    window.onload = function() {
+      var ctx = document.getElementById('canvas').getContext('2d');
+      window.myLine = new Chart(ctx, config);
+
+      var ctx2 = document.getElementById('canvas2').getContext('2d');
+      window.myLine2 = new Chart(ctx2, config2);
+    };
+
+
+
   </script>
 
 </body>
