@@ -1,16 +1,16 @@
 <?php
-$data_bulan = array('januari',
-                    'febuari',
-                    'maret',
-                    'april',
-                    'mei',
-                    'juni',
-                    'juli',
-                    'agustus',
-                    'september',
-                    'oktober',
-                    'november',
-                    'desember'
+$data_bulan = array('Januari',
+                    'Febuari',
+                    'Maret',
+                    'April',
+                    'Mei',
+                    'Juni',
+                    'Juli',
+                    'Agustus',
+                    'September',
+                    'Oktober',
+                    'November',
+                    'Desember'
                   );
 
  ?>
@@ -25,7 +25,7 @@ $data_bulan = array('januari',
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Penjualan kayuku</title>
+  <title>Penjualan Kayu</title>
 
   <!-- Custom fonts for this theme -->
   <link href="<?=base_url()?>assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -42,7 +42,7 @@ $data_bulan = array('januari',
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg bg-secondary text-uppercase fixed-top" id="mainNav">
     <div class="container">
-      <a class="navbar-brand js-scroll-trigger" href="#page-top">Penjualan kayuku</a>
+      <a class="navbar-brand js-scroll-trigger" href="#page-top">Penjualan Kayu</a>
       <button class="navbar-toggler navbar-toggler-right text-uppercase font-weight-bold bg-primary text-white rounded" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         Menu
         <i class="fas fa-bars"></i>
@@ -50,13 +50,16 @@ $data_bulan = array('januari',
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item mx-0 mx-lg-1">
-            <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#portfolio">Detail Tiap bulan</a>
+            <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#portfolio">Detail Tiap Bulan</a>
           </li>
           <li class="nav-item mx-0 mx-lg-1">
-            <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#about">Input Niai Aktual</a>
+            <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#mape">MAPE</a>
           </li>
           <li class="nav-item mx-0 mx-lg-1">
-            <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#contact">Nilai prakiraan Awal</a>
+            <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#about">Nilai Aktual</a>
+          </li>
+          <li class="nav-item mx-0 mx-lg-1">
+            <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#contact">Nilai Prediksi Awal</a>
           </li>
         </ul>
       </div>
@@ -69,7 +72,7 @@ $data_bulan = array('januari',
 
 
 
-      <h2 class="page-section-heading text-center text-uppercase  mb-0" style="margin-top:100px">Perkiraan Jumlah Stok Bulan Ini</h2>
+      <h2 class="page-section-heading text-center text-uppercase  mb-0" style="margin-top:100px">Prediksi Jumlah Stok Bulan Depan</h2>
 
       <div class="divider-custom divider-light">
         <div class="divider-custom-line"></div>
@@ -89,7 +92,7 @@ $data_bulan = array('januari',
     <div class="container">
 
       <!-- Portfolio Section Heading -->
-      <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Detail Tiap bulan</h2>
+      <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Detail Tiap Bulan</h2>
 
       <!-- Icon Divider -->
       <div class="divider-custom">
@@ -101,11 +104,11 @@ $data_bulan = array('januari',
           <tr>
             <th>Bulan</th>
             <th>Tahun</th>
-            <th>aktual</th>
-            <th>prakiraan α = 0.5</th>
-            <th>prakiraan α = 0.7</th>
-            <th>prakiraan α = 0.9</th>
-            <th width="145">rumus prakiraan
+            <th>Aktual</th>
+            <th>Prediksi α = 0.5</th>
+            <th>Prediksi α = 0.7</th>
+            <th>Prediksi α = 0.9</th>
+            <th width="145">Rumus Algoritma
               <!-- Portfolio Item 1 -->
             </th>
           </tr>
@@ -161,27 +164,27 @@ $data_bulan = array('januari',
                                 $nilaiaktual = $v_da->aktual;
                                 array_push($total,$v_da->aktual);
                                 $nilaiperkiraan1 = $data_prakiraan_awal->prakiraanawal;
-                                $prediksi1 =  $nilaiperkiraan1 - 1 + (0.5*($nilaiaktual - $nilaiperkiraan1));
+                                array_push($prediksi_data1,round($nilaiperkiraan1,3));
+                                $prediksi1 =  $nilaiperkiraan1 + (0.5*($nilaiaktual - $nilaiperkiraan1));
                                 $pengurangan1 = $nilaiaktual - $nilaiperkiraan1;
                                 $kalialfa1 = 0.5*($nilaiaktual - $nilaiperkiraan1);
                                 array_push($mape1,round(abs((($nilaiaktual - $nilaiperkiraan1)/$nilaiaktual) * 100),3));
                                 array_push($label,''.$data_bulan[$v_da->bulan-1].' '.$v_da->tahun.'');
-                                array_push($prediksi_data1,round($prediksi1,3));
 
                                 $nilaiperkiraan2 = $data_prakiraan_awal->prakiraanawal;
-                                $prediksi2 =  $nilaiperkiraan2 - 1 + (0.7*($nilaiaktual - $nilaiperkiraan2));
+                                array_push($prediksi_data2,round($nilaiperkiraan2,3));
+                                $prediksi2 =  $nilaiperkiraan2 + (0.7*($nilaiaktual - $nilaiperkiraan2));
                                 $pengurangan2 = $nilaiaktual - $nilaiperkiraan2;
                                 $kalialfa2 = 0.7*($nilaiaktual - $nilaiperkiraan2);
                                 array_push($mape2,round(abs((($nilaiaktual - $nilaiperkiraan2)/$nilaiaktual)* 100),3));
-                                array_push($prediksi_data2,round($prediksi2,3));
 
 
                                 $nilaiperkiraan3 = $data_prakiraan_awal->prakiraanawal;
-                                $prediksi3 =  $nilaiperkiraan3 - 1 + (0.9*($nilaiaktual - $nilaiperkiraan3));
+                                array_push($prediksi_data3,round($nilaiperkiraan3,3));
+                                $prediksi3 =  $nilaiperkiraan3 + (0.9*($nilaiaktual - $nilaiperkiraan3));
                                 $pengurangan3 = $nilaiaktual - $nilaiperkiraan3;
                                 $kalialfa3 = 0.9*($nilaiaktual - $nilaiperkiraan3);
                                 array_push($mape3,round(abs((($nilaiaktual - $nilaiperkiraan3)/$nilaiaktual) * 100),3));
-                                array_push($prediksi_data3,round($prediksi3,3));
 
                                 ?>
                                 <pre class="text-left">
@@ -191,7 +194,7 @@ $data_bulan = array('januari',
                             Dt-1 = Permintaan Nyata
                                 </pre>
                                 <pre class="text-left">
-                            Ft = Ft – 1 + α (Dt-1 – Ft-1)
+                            Ft = Ft–1 + α (Dt-1 – Ft-1)
                             Ft = <?=$nilaiperkiraan1?> + 0.5 (<?=$nilaiaktual?> – <?=$nilaiperkiraan1?>)
                             Ft = <?=$nilaiperkiraan1?> + 0.5 (<?=$pengurangan1?>)
                             Ft = <?=$nilaiperkiraan1?> + (<?=$kalialfa1?>)
@@ -200,7 +203,7 @@ $data_bulan = array('januari',
 
                                   </pre>
                                   <pre class="text-left">
-                            Ft = Ft – 1 + α (Dt-1 – Ft-1)
+                            Ft = Ft–1 + α (Dt-1 – Ft-1)
                             Ft = <?=$nilaiperkiraan2?> + 0.7 (<?=$nilaiaktual?> – <?=$nilaiperkiraan1?>)
                             Ft = <?=$nilaiperkiraan2?> + 0.7 (<?=$pengurangan2?>)
                             Ft = <?=$nilaiperkiraan2?> + (<?=$kalialfa2?>)
@@ -209,7 +212,7 @@ $data_bulan = array('januari',
 
                                     </pre>
                                     <pre class="text-left">
-                            Ft = Ft – 1 + α (Dt-1 – Ft-1)
+                            Ft = Ft–1 + α (Dt-1 – Ft-1)
                             Ft = <?=$nilaiperkiraan3?> + 0.9 (<?=$nilaiaktual?> – <?=$nilaiperkiraan3?>)
                             Ft = <?=$nilaiperkiraan3?> + 0.9 (<?=$pengurangan3?>)
                             Ft = <?=$nilaiperkiraan3?> + (<?=$kalialfa3?>)
@@ -260,31 +263,31 @@ $data_bulan = array('januari',
                                 </div>
                                 <?php
 
+                                array_push($prediksi_data1,round($prediksi1,3));
 
                                 $nilaiaktual = $v_da->aktual;
                                 array_push($total,$v_da->aktual);
                                 $nilaiperkiraan1 = $prediksi1;
-                                $prediksi1 =  $nilaiperkiraan1 - 1 + (0.5*($nilaiaktual - $nilaiperkiraan1));
+                                $prediksi1 =  $nilaiperkiraan1 + (0.5*($nilaiaktual - $nilaiperkiraan1));
                                 $pengurangan1 = $nilaiaktual - $nilaiperkiraan1;
                                 $kalialfa1 = 0.5*($nilaiaktual - $nilaiperkiraan1);
                                 array_push($mape1,round(abs((($nilaiaktual - $nilaiperkiraan1)/$nilaiaktual) * 100),3));
                                 array_push($label,''.$data_bulan[$v_da->bulan-1].' '.$v_da->tahun.'');
-                                array_push($prediksi_data1,round($prediksi1,3));
 
+                                array_push($prediksi_data2,round($prediksi2,3));
                                 $nilaiperkiraan2 = $prediksi2;
-                                $prediksi2 =  $nilaiperkiraan2 - 1 + (0.7*($nilaiaktual - $nilaiperkiraan2));
+                                $prediksi2 =  $nilaiperkiraan2 + (0.7*($nilaiaktual - $nilaiperkiraan2));
                                 $pengurangan2 = $nilaiaktual - $nilaiperkiraan2;
                                 $kalialfa2 = 0.7*($nilaiaktual - $nilaiperkiraan2);
                                 array_push($mape2,round(abs((($nilaiaktual - $nilaiperkiraan2)/$nilaiaktual)* 100),3));
-                                array_push($prediksi_data2,round($prediksi2,3));
 
+                                array_push($prediksi_data3,round($prediksi3,3));
 
                                 $nilaiperkiraan3 = $prediksi3;
-                                $prediksi3 =  $nilaiperkiraan3 - 1 + (0.9*($nilaiaktual - $nilaiperkiraan3));
+                                $prediksi3 =  $nilaiperkiraan3 + (0.9*($nilaiaktual - $nilaiperkiraan3));
                                 $pengurangan3 = $nilaiaktual - $nilaiperkiraan3;
                                 $kalialfa3 = 0.9*($nilaiaktual - $nilaiperkiraan3);
                                 array_push($mape3,round(abs( (($nilaiaktual - $nilaiperkiraan3)/$nilaiaktual) * 100),3));
-                                array_push($prediksi_data3,round($prediksi3,3));
 
 
                                 ?>
@@ -295,7 +298,7 @@ $data_bulan = array('januari',
                             Dt-1 = Permintaan Nyata
                                 </pre>
                                 <pre class="text-left">
-                            Ft = Ft – 1 + α (Dt-1 – Ft-1)
+                            Ft = Ft–1 + α (Dt-1 – Ft-1)
                             Ft = <?=$nilaiperkiraan1?> + 0.5 (<?=$nilaiaktual?> – <?=$nilaiperkiraan1?>)
                             Ft = <?=$nilaiperkiraan1?> + 0.5 (<?=$pengurangan1?>)
                             Ft = <?=$nilaiperkiraan1?> + (<?=$kalialfa1?>)
@@ -304,7 +307,7 @@ $data_bulan = array('januari',
 
                                   </pre>
                                   <pre class="text-left">
-                            Ft = Ft – 1 + α (Dt-1 – Ft-1)
+                            Ft = Ft–1 + α (Dt-1 – Ft-1)
                             Ft = <?=$nilaiperkiraan2?> + 0.7 (<?=$nilaiaktual?> – <?=$nilaiperkiraan1?>)
                             Ft = <?=$nilaiperkiraan2?> + 0.7 (<?=$pengurangan2?>)
                             Ft = <?=$nilaiperkiraan2?> + (<?=$kalialfa2?>)
@@ -313,7 +316,7 @@ $data_bulan = array('januari',
 
                                     </pre>
                                     <pre class="text-left">
-                            Ft = Ft – 1 + α (Dt-1 – Ft-1)
+                            Ft = Ft–1 + α (Dt-1 – Ft-1)
                             Ft = <?=$nilaiperkiraan3?> + 0.9 (<?=$nilaiaktual?> – <?=$nilaiperkiraan3?>)
                             Ft = <?=$nilaiperkiraan3?> + 0.9 (<?=$pengurangan3?>)
                             Ft = <?=$nilaiperkiraan3?> + (<?=$kalialfa3?>)
@@ -344,6 +347,8 @@ $data_bulan = array('januari',
         </tbody>
       </table>
     </div>
+  </section>
+  <section class="page-section mape" id="mape">
     <div class="container">
 
       <!-- About Section Heading -->
@@ -371,7 +376,7 @@ $data_bulan = array('januari',
           for($i = 0;$i < $no ; $i++){
             $jum1 = $jum1+$mape1[$i];
             $jum2 = $jum2+$mape2[$i];
-            $jum3 = $jum1+$mape3[$i];
+            $jum3 = $jum3+$mape3[$i];
             $j = $i+1;
             echo '<tr>';
             echo '<td>'.$j.'</td>';
@@ -396,14 +401,14 @@ $data_bulan = array('januari',
     </div>
     <div class="container">
       <!-- About Section Heading -->
-      <h2 class="page-section-heading text-center text-uppercase text-secondary">chart mape</h2>
+      <h2 class="page-section-heading text-center text-uppercase text-secondary">Chart Mape</h2>
 
       <!-- Icon Divider -->
       <div class="divider-custom">
         <div class="divider-custom-line"></div>
       </div>
       <canvas id="canvas"></canvas>
-      <h2 class="page-section-heading text-center text-uppercase text-secondary">chart mape terkecil</h2>
+      <h2 class="page-section-heading text-center text-uppercase text-secondary">Chart Mape Terkecil</h2>
 
       <!-- Icon Divider -->
       <div class="divider-custom">
@@ -417,7 +422,7 @@ $data_bulan = array('januari',
     <div class="container">
 
       <!-- About Section Heading -->
-      <h2 class="page-section-heading text-center text-uppercase text-secondary">Input Niai Aktual</h2>
+      <h2 class="page-section-heading text-center text-uppercase text-secondary">Nilai Aktual</h2>
 
       <!-- Icon Divider -->
       <div class="divider-custom">
@@ -425,7 +430,7 @@ $data_bulan = array('januari',
       </div>
 
       <div class="divider-custom">
-        <button class="btn btn-info" data-toggle="modal" data-target="#addaktual">add data</button>
+        <button class="btn btn-info" data-toggle="modal" data-target="#addaktual">Add Data</button>
       </div>
 
 
@@ -437,7 +442,7 @@ $data_bulan = array('januari',
               <th>Bulan</th>
               <th>Tahun</th>
               <th>Nilai aktual</th>
-              <th>action</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
@@ -449,7 +454,7 @@ $data_bulan = array('januari',
                 <td><?=$data_bulan[$v_da->bulan-1]?></td>
                 <td><?=$v_da->tahun?></td>
                 <td><?=round($v_da->aktual,3)?></td>
-                <td><a href="<?=base_url()?>utama/delete_aktual/<?=$v_da->id?>"><button class="btn btn-danger">delete</button></a></td>
+                <td><a href="<?=base_url()?>utama/delete_aktual/<?=$v_da->id?>"><button class="btn btn-danger">Delete</button></a></td>
               </tr>
             <?php
             }
@@ -465,7 +470,7 @@ $data_bulan = array('januari',
     <div class="container">
 
       <!-- About Section Heading -->
-      <h2 class="page-section-heading text-center text-uppercase text-secondary">Nilai prakiraan Awal</h2>
+      <h2 class="page-section-heading text-center text-uppercase text-secondary">Nilai Prediksi Awal</h2>
 
       <!-- Icon Divider -->
       <div class="divider-custom">
@@ -475,7 +480,7 @@ $data_bulan = array('januari',
       <div class="divider-custom">
 
 
-        <input class="form-control" name="prakiraanawal" type="text" value="<?=$data_prakiraan_awal->prakiraanawal?>" placeholder="Masukan Nilai Prakiraan Awal" >
+        <input class="form-control" style="text-align:center;" name="prakiraanawal" type="text" value="<?=$data_prakiraan_awal->prakiraanawal?>" placeholder="Masukan Nilai Prakiraan Awal" >
       </div>
       <div class="divider-custom">
         <button type="submit" class="btn btn-success">Simpan</button>
@@ -725,7 +730,7 @@ $data_bulan = array('januari',
             display: true,
             scaleLabel: {
               display: true,
-              labelString: 'Nilai Aktual'
+              labelString: 'Nilai Aktual & Prediksi'
             }
 
           }]
@@ -777,7 +782,7 @@ $data_bulan = array('januari',
             display: true,
             scaleLabel: {
               display: true,
-              labelString: 'Nilai Aktual'
+              labelString: 'Nilai Aktual & Prediksi'
             }
           }]
         }
